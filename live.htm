@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link rel="Stylesheet" href="style.css" />
+</head>
+<body>
+
+<div id="target"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+<script src="jquery.scheduler.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+        var x = $("#target").scheduler({
+            startDate: "Jul 9, 2010",
+            hourDivisions: 2,
+            hourStart: 9,
+            hourEnd: 17,
+            timeConvention: '12Hour'
+        });
+        
+        /*
+        x.bind("incrementWeek", function (event) {
+            console.log("incrementWeek bind");
+        });*/
+
+    });
+</script>
+
+</body>
+</html>

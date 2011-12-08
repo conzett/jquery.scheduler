@@ -1,0 +1,47 @@
+﻿table {
+    border-collapse:collapse;
+    font-size : 12px;
+}
+
+th, td {
+    border: 1px solid black;
+}
+
+th {
+    user-select: none; 
+    -moz-user-select: none; 
+    -khtml-user-select: none; 
+    -webkit-user-select: none; 
+    -o-user-select: none;
+
+    position : relative;
+    width : 100px;
+    padding : 6px;
+}
+
+tbody tr th {
+    width : 60px;
+}
+
+tbody td {
+    height : 20px;
+    cursor : default;
+}
+
+thead th span {
+    position : absolute;
+    left : 6px;
+}
+
+caption {
+    font-size : 14px;
+    font-weight : bold;
+    text-align : left;
+}
+
+#prev, #next {
+    margin-right : 6px;
+    font-size : 12px;
+    font-weight : normal;
+    cursor : pointer;
+}
