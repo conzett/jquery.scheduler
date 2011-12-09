@@ -165,8 +165,9 @@ test("Incrementing and decrementing the week", function () {
 test("Test binding to custom events", function () {
 
     $('#qunit-fixture').append('<div id="target"></div>');
-    var x = $('#target').scheduler();
-    var testIncrementWeek, testDecrementWeek, testGenerateTableStart, testGenerateTableFinish, testGenerateTable;
+    var x = $('#target').scheduler({ startDate: "Jul 9, 2011" });
+    var testIncrementWeek, testDecrementWeek, testGenerateTableStart, testGenerateTableFinish,
+        testChangeMonth, testChangeYear, testGenerateTable;
 
     x.bind("incrementWeek", function (event) {
         testIncrementWeek = true;
@@ -188,25 +189,41 @@ test("Test binding to custom events", function () {
         testDecrementWeek = true;
     });
 
+    x.bind("changeMonth", function (event) {
+        testChangeMonth = true;
+    });
+
+    x.bind("changeYear", function (event) {
+        testChangeYear = true;
+    });
+
+    var date = new Date();
+
     var table = $('#target');
     var next = table.find("#next");
 
     $(next).click();
 
-    ok(testIncrementWeek, "incerementWeek raised correctly");
-    ok(testGenerateTable, "generateTable raised correctly");
-    ok(testGenerateTableStart, "generateTableStart raised correctly");
-    ok(testGenerateTableFinish, "generateTableFinish raised correctly");
+    ok(testIncrementWeek, "Expect true: incerementWeek raised correctly");
+    ok(testGenerateTable, "Expect true: generateTable raised correctly");
+    ok(testGenerateTableStart, "Expect true: generateTableStart raised correctly");
+    ok(testGenerateTableFinish, "Expect true: generateTableFinish raised correctly");
 
     table = $('#target');
     var prev = table.find("#prev");
 
     $(prev).click();
 
-    ok(testDecrementWeek, "decrementWeek raised correctly");
-    ok(testGenerateTable, "generateTable raised correctly");
-    ok(testGenerateTableStart, "generateTableStart raised correctly");
-    ok(testGenerateTableFinish, "generateTableFinish raised correctly");
+    ok(testDecrementWeek, "Expect true: decrementWeek raised correctly");
+    ok(testGenerateTable, "Expect true: generateTable raised correctly");
+    ok(testGenerateTableStart, "Expect true: generateTableStart raised correctly");
+    ok(testGenerateTableFinish, "Expect true: generateTableFinish raised correctly");
+
+    $("#year").val('2012').change();
+    ok(testChangeYear, "Expect true: changeYear raised correctly");
+
+    $("#month").val('5').change();
+    ok(testChangeMonth, "Expect true: changeMonth raised correctly");
 
 });
 
