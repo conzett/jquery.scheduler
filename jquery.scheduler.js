@@ -22,11 +22,11 @@
 
         this._defaults = defaults;
         this._name = pluginName;
-
-        var currentCalendarDate = new Date(this.options.startDate);
+                
         var options = this.options;
 
-        this.element.generateTable = function(startDate){
+        var _generateTable = function(startDate, element){
+
             var hourNumber = (options.hourEnd - options.hourStart);
             var structure = '<table><caption>'+ options.prevButton;
             var date = new Date(startDate);
@@ -89,7 +89,7 @@
             
             structure += '</tbody></table>';
 
-            var element = $(this).html(structure);
+            $(element).html(structure);
 
             $(element).find('#' + $(options.nextButton).attr('id')).click(function() {
                 $(element).trigger('incrementWeek');
@@ -100,21 +100,27 @@
             });
         };
 
+        this.element.currentDate = new Date(this.options.startDate);
+
+        this.element.generateTable = function() {
+            _generateTable(new Date(this.currentDate), this);
+        }
+
         this.element.incrementWeek = function() {
-            currentCalendarDate.setDate(currentCalendarDate.getDate()+7);
-            this.generateTable(new Date(currentCalendarDate));
+            this.currentDate.setDate(this.currentDate.getDate()+7);
+            $(this).trigger('generateTable');
         }
 
         this.element.decrementWeek = function() {
-            currentCalendarDate.setDate(currentCalendarDate.getDate()-7);
-            this.generateTable(new Date(currentCalendarDate));
+            this.currentDate.setDate(this.currentDate.getDate()-7);
+            $(this).trigger('generateTable');
         }
 
         this.init();        
     }
 
     Plugin.prototype.init = function () {
-        this.element.generateTable(this.options.startDate);
+        this.element.generateTable(); //this.options.startDate
         this.options.callback.call();        
     };
 
