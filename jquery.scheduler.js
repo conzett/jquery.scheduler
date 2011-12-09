@@ -126,6 +126,14 @@
             $(element).find('#' + $(options.prevButton).attr('id')).click(function() {
                 $(element).trigger('decrementWeek');
             });
+
+            $(element).find('#' + options.classPrefix + "month").change(function() {
+                $(element).trigger('changeMonth');
+            });
+
+            $(element).find('#' + options.classPrefix + "year").change(function() {
+                $(element).trigger('changeYear');
+            });
         };
 
         this.element.currentDate = new Date(this.options.startDate);
@@ -143,6 +151,16 @@
 
         this.element.decrementWeek = function() {
             this.currentDate.setDate(this.currentDate.getDate()-7);
+            $(this).trigger('generateTable');
+        }
+
+        this.element.changeMonth = function() {
+            this.currentDate.setMonth($('#' + options.classPrefix + "month").val());
+            $(this).trigger('generateTable');
+        }
+
+        this.element.changeYear = function() {
+            this.currentDate.setFullYear($('#' + options.classPrefix + "year").val());
             $(this).trigger('generateTable');
         }
 

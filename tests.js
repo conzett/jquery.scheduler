@@ -260,32 +260,28 @@ test("Test month and year control generation", function () {
 test("Test month and year control useage", function () {
 
     $('#qunit-fixture').append('<div id="target"></div>');
-    var x = $('#target').scheduler({ startDate: "Dec 9, 2010" });
+    var x = $('#target').scheduler({ startDate: "Dec 9, 2010", classPrefix : "test_" });
 
     var table = $('#target table');
     var thead = table.find("thead tr th");
     var caption = table.find("caption");
 
-    var monthList = caption.find("#month");
-    var yearList = caption.find("#year");
+    var monthList = caption.find("#test_month");
+    var yearList = caption.find("#test_year");
 
     var i;
     var selectedAttrVal;
+    
 
     $(monthList).val('3');
-
-    x.bind("generateTableFinish", function (event) {
-        selectedAttrVal = $('#month').find('option[value="3"]').attr('selected');
-    });
-
-    equal(selectedAttrVal, "selected", 'Expect the correct changed month to be selected');
+    selectedAttrVal = $('#test_month').find('option[value="3"]').attr('selected');
+    equal(selectedAttrVal, "selected", 'Expect the correct changed month to be selected');    
+    
     selectedAttrVal = undefined;
+    
+    $(yearList).val('2012');   
 
-    $(yearList).val('2012');
-
-    x.bind("generateTableFinish", function (event) {
-        selectedAttrVal = $('#year').find('option[value="2012"]').attr('selected');
-    });
-
+    selectedAttrVal = $('#test_year').find('option[value="2012"]').attr('selected');
     equal(selectedAttrVal, "selected", 'Expect the correct changed year to be selected');
+    
 });
