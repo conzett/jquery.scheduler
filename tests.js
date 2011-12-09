@@ -231,8 +231,8 @@ test("Test month and year control generation", function () {
 
     $('#qunit-fixture').append('<div id="target"></div>');
     $('#target').scheduler({
-        yearMin: 2008,
-        yearMax: 2014,
+        dateMin: "Jan 1, 2008",
+        dateMax: "Dec 31, 2014",
         classPrefix: 'something_'
     });
 

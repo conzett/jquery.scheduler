@@ -4,7 +4,7 @@
         defaults = {
             hourStart: 0,
             hourEnd: 24,
-            startDate: (new Date()).toDateString(),
+            startDate: new Date(),
             daysOfTheWeek : ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
             months : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
             hourDivisions : 2,
@@ -13,8 +13,8 @@
             classPrefix : '',
             prevButton : '<span id="prev">Previous</span>',
             nextButton : '<span id="next">Next</span>',
-            yearMin : (new Date()).getFullYear(),
-            yearMax : (new Date()).getFullYear() + 4
+            dateMin : new Date(),
+            dateMax : (new Date()).setFullYear((new Date()).getFullYear() + 4)
         };
 
     function Plugin(element, options) {
@@ -33,6 +33,8 @@
             var structure = '<table><caption>'+ options.prevButton;
             var date = new Date(startDate);
             var endDate = new Date(startDate);
+            var dateMin = new Date(options.dateMin);
+            var dateMax = new Date(options.dateMax);
 
             endDate.setDate(endDate.getDate() + 6);
             
@@ -53,7 +55,7 @@
 
             structure += date.getDate() + ' - ' + endDate.getDate() + ', <select id="' + options.classPrefix + 'year">';
 
-            for(i=options.yearMin; i <= options.yearMax; i++)
+            for(i=dateMin.getFullYear(); i <= dateMax.getFullYear(); i++)
             {
                 structure += '<option value="' + i;
 
