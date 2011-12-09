@@ -226,24 +226,23 @@ test("Test month and year control generation and function", function () {
 
     var date = new Date();
 
-    var monthOption = caption.find("#something_month option");
-    var yearOption = caption.find("#something_year option");
+    var monthList = caption.find("#something_month");
+    var monthOption = monthList.find("option");
+    var yearList = caption.find("#something_year");
+    var yearOption = yearList.find("option");
 
     for (i = 0; i < 11; i++) {
-        equal($(monthOption[i]).html(), months[date.getMonth()],
-                        'Expect the html in the option at position ' + i + ' to be ' + months[date.getMonth()]);
-        date.setMonth(date.getMonth() + 1);
+        equal($(monthOption[i]).html(), months[i], 'Expect the html in the option at position ' + i + ' to be ' + months[i]);
     }
-
-    var date = new Date();
 
     for (i = 0; i < 11; i++) {
-        equal($(monthOption[i]).attr('value'), date.getMonth(),
-                        'Expect the value in the option at position ' + i + ' to be ' + date.getMonth());
-        date.setMonth(date.getMonth() + 1);
+        equal($(monthOption[i]).attr('value'), i,
+                        'Expect the value in the option at position ' + i + ' to be ' + i);
     }
 
-    var date = new Date();
+    var selectedAttrVal = $(monthList).find('option[value="' + date.getMonth() + '"]').attr('selected');
+    equal(selectedAttrVal, "selected", 'Expect the correct current month to be selected');
+
     date.setFullYear(2008);
 
     for (i = 0; i < 7; i++) {
@@ -251,5 +250,9 @@ test("Test month and year control generation and function", function () {
                         'Expect the value in the option at position ' + i + ' to be ' + date.getFullYear());
         date.setFullYear(date.getFullYear() + 1);
     }
+
+    date = new Date();
+    selectedAttrVal = $(yearList).find('option[value="' + date.getFullYear() + '"]').attr('selected');
+    equal(selectedAttrVal, "selected", 'Expect the correct current year to be selected');
 
 });

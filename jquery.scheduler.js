@@ -38,13 +38,16 @@
             
             structure += options.nextButton + '<select id="' + options.classPrefix + 'month">';
 
-            for(i=0; i< 11; i++)
+            for(i=0; i< 12; i++)
             {
-                structure += '<option value="' + date.getMonth() +'">' + options.months[date.getMonth()] + '</option>';
-                date.setMonth(date.getMonth() + 1);
+                structure += '<option value="' + i;
+                
+                if(date.getMonth() === i){
+                    structure += '" selected="selected';
+                }
+                
+                structure += '">' + options.months[i] + '</option>';
             }
-            
-            date = new Date(startDate); // reset date
 
             structure += '</select>';
 
