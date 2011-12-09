@@ -161,3 +161,51 @@ test("Incrementing and decrementing the week", function () {
         'After we click the next button we expect the date value in the table header at position 1 to be back to the provided date argument');
 
 });
+
+test("Test binding to custom events", function () {
+
+    $('#qunit-fixture').append('<div id="target"></div>');
+    var x = $('#target').scheduler();
+    var testIncrementWeek, testDecrementWeek, testGenerateTableStart, testGenerateTableFinish, testGenerateTable;
+
+    x.bind("incrementWeek", function (event) {
+        testIncrementWeek = true;
+    });
+
+    x.bind("generateTableStart", function (event) {
+        testGenerateTableStart = true;
+    });
+
+    x.bind("generateTableFinish", function (event) {
+        testGenerateTableFinish = true;
+    });
+
+    x.bind("generateTable", function (event) {
+        testGenerateTable = true;
+    });
+
+    x.bind("decrementWeek", function (event) {
+        testDecrementWeek = true;
+    });
+
+    var table = $('#target');
+    var next = table.find("#next");
+
+    $(next).click();
+
+    ok(testIncrementWeek, "incerementWeek raised correctly");
+    ok(testGenerateTable, "generateTable raised correctly");
+    ok(testGenerateTableStart, "generateTableStart raised correctly");
+    ok(testGenerateTableFinish, "generateTableFinish raised correctly");
+
+    table = $('#target');
+    var prev = table.find("#prev");
+
+    $(prev).click();
+
+    ok(testDecrementWeek, "decrementWeek raised correctly");
+    ok(testGenerateTable, "generateTable raised correctly");
+    ok(testGenerateTableStart, "generateTableStart raised correctly");
+    ok(testGenerateTableFinish, "generateTableFinish raised correctly");
+
+});

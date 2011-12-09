@@ -22,11 +22,24 @@
             hourEnd: 17,
             timeConvention: '12Hour'
         });
-        
-        /*
+
         x.bind("incrementWeek", function (event) {
-            console.log("incrementWeek bind");
-        });*/
+
+        });
+
+        x.bind("decrementWeek", function (event) {
+
+        });
+
+        var startTime;
+
+        x.bind("generateTableStart", function (event) {
+            startTime = new Date().getTime();
+        });
+
+        x.bind("generateTableFinish", function (event) {
+            console.log("Table generated in " + ((new Date().getTime()) - startTime) + " ms");
+        });
 
     });
 </script>

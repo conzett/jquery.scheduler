@@ -103,7 +103,9 @@
         this.element.currentDate = new Date(this.options.startDate);
 
         this.element.generateTable = function() {
+            $(this).trigger('generateTableStart');
             _generateTable(new Date(this.currentDate), this);
+            $(this).trigger('generateTableFinish');
         }
 
         this.element.incrementWeek = function() {
@@ -120,7 +122,7 @@
     }
 
     Plugin.prototype.init = function () {
-        this.element.generateTable(); //this.options.startDate
+        this.element.generateTable();
         this.options.callback.call();        
     };
 
