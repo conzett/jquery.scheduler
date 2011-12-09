@@ -13,7 +13,7 @@
             classPrefix : '',
             prevButton : '<span id="prev">Previous</span>',
             nextButton : '<span id="next">Next</span>',
-            dateMin : new Date(),
+            dateMin : undefined,
             dateMax : (new Date()).setFullYear((new Date()).getFullYear() + 4)
         };
 
@@ -25,6 +25,7 @@
         this._defaults = defaults;
         this._name = pluginName;
                 
+        this.options.dateMin = this.options.dateMin || this.options.startDate;
         var options = this.options;
 
         var _generateTable = function(startDate, element){
@@ -46,6 +47,13 @@
                 
                 if(date.getMonth() === i){
                     structure += '" selected="selected';
+                }
+
+                var tempDate = new Date(startDate);
+                tempDate.setMonth(i);
+
+                if(tempDate > dateMax){
+                    structure += '" disabled="disabled';
                 }
                 
                 structure += '">' + options.months[i] + '</option>';

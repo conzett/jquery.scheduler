@@ -277,7 +277,7 @@ test("Test month and year control generation", function () {
 test("Test month and year control useage", function () {
 
     $('#qunit-fixture').append('<div id="target"></div>');
-    var x = $('#target').scheduler({ startDate: "Dec 9, 2010", classPrefix : "test_" });
+    var x = $('#target').scheduler({ startDate: "Dec 9, 2010", classPrefix: "test_" });
 
     var table = $('#target table');
     var thead = table.find("thead tr th");
@@ -288,17 +288,41 @@ test("Test month and year control useage", function () {
 
     var i;
     var selectedAttrVal;
-    
 
-    $(monthList).val('3');
+
+    $(monthList).val('3').change();
     selectedAttrVal = $('#test_month').find('option[value="3"]').attr('selected');
-    equal(selectedAttrVal, "selected", 'Expect the correct changed month to be selected');    
-    
+    equal(selectedAttrVal, "selected", 'Expect the correct changed month to be selected');
+
     selectedAttrVal = undefined;
-    
-    $(yearList).val('2012');   
+
+    $("#test_year").val('2012');
 
     selectedAttrVal = $('#test_year').find('option[value="2012"]').attr('selected');
     equal(selectedAttrVal, "selected", 'Expect the correct changed year to be selected');
-    
+
+});
+
+test("Test disabled controls with the min and max date parameters", function () {
+
+    $('#qunit-fixture').append('<div id="target"></div>');
+
+    var x = $('#target').scheduler({
+        startDate: "Nov 15, 2011",
+        dateMin: "Oct 1, 2010",
+        dateMax: "Nov 31, 2011"
+    });
+
+    var monthOptions = $('#month option');
+
+    equal($(monthOptions[11]).attr('disabled'), "disabled",
+        'Expect the month of December to be disabled since it falls outside the dateMax range');
+
+    $('#year').val('2010').change();
+
+    var monthOptions = $('#month option');
+
+    equal($(monthOptions[11]).attr('disabled'), undefined,
+        'After decrementing the year expect the month of December to NOT be disabled since it falls inside the dateMax range');
+
 });

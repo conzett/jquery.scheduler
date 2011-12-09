@@ -16,13 +16,13 @@
     $(document).ready(function () {
 
         var x = $("#target").scheduler({
-            startDate: "Dec 9, 2011",
             hourDivisions: 2,
             hourStart: 9,
             hourEnd: 17,
             timeConvention: '12Hour',
-            yearMin: 2008,
-            yearMax: 2014
+            startDate: "Nov 15, 2011",
+            dateMin: "Oct 1, 2010",
+            dateMax: "Nov 31, 2011"
         });
 
         x.bind("incrementWeek", function (event) {
