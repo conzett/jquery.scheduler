@@ -12,7 +12,9 @@
             timeConvention : '24Hour',
             classPrefix : '',
             prevButton : '<span id="prev">Previous</span>',
-            nextButton : '<span id="next">Next</span>'
+            nextButton : '<span id="next">Next</span>',
+            yearMin : (new Date()).getFullYear(),
+            yearMax : (new Date()).getFullYear() + 4
         };
 
     function Plugin(element, options) {
@@ -34,9 +36,32 @@
 
             endDate.setDate(endDate.getDate() + 6);
             
-            structure += options.nextButton + options.months[date.getMonth()] + ' ';
-            structure += date.getDate() + ' - ' + endDate.getDate() + ', ';
-            structure += date.getFullYear() + '</caption><thead><tr><th></th>';            
+            structure += options.nextButton + '<select id="' + options.classPrefix + 'month">';
+
+            for(i=0; i< 11; i++)
+            {
+                structure += '<option value="' + date.getMonth() +'">' + options.months[date.getMonth()] + '</option>';
+                date.setMonth(date.getMonth() + 1);
+            }
+            
+            date = new Date(startDate); // reset date
+
+            structure += '</select>';
+
+            structure += date.getDate() + ' - ' + endDate.getDate() + ', <select id="' + options.classPrefix + 'year">';
+
+            for(i=options.yearMin; i <= options.yearMax; i++)
+            {
+                structure += '<option value="' + i;
+
+                if(date.getFullYear() === i){
+                    structure += '" selected="selected';
+                }
+                               
+                structure += '">' + i + '</option>';
+            }
+
+            structure += '</caption><thead><tr><th></th>';            
 
             for(i=0; i< 7; i++)
             {

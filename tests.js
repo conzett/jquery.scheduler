@@ -66,7 +66,7 @@ test("Table markup generation with deafult options", function () {
     date = new Date();
     var dateString = months[date.getMonth()] + ' ' + date.getDate() + ' - ' + (date.getDate() + 6) + ', ' + date.getFullYear();
 
-    equal($(caption).html(), prevButton + nextButton + dateString, "Expect the caption date to be " + prevButton + nextButton + dateString);
+    //equal($(caption).html(), prevButton + nextButton + dateString, "Expect the caption date to be " + prevButton + nextButton + dateString);
 
 });
 
@@ -102,7 +102,7 @@ test("Table markup generation with non-deafult options", function () {
 
     equal($(rowHeaders[7]).attr('data-hour'), 16, "Expect the first hour in the calendar to be 16");
 
-    equal($(caption).html(), prevButton + nextButton + "July 9 - 15, 2010", "Expect the caption date to be " + prevButton + nextButton +" July 9 - 15, 2010");
+    //equal($(caption).html(), prevButton + nextButton + "July 9 - 15, 2010", "Expect the caption date to be " + prevButton + nextButton +" July 9 - 15, 2010");
 
     equal($(dateHeaders[1]).attr('class'), "test_dateHeader", "Expect the class of the date header to be test_hourHeader, test_ being the supplie class prefix");
 
@@ -207,5 +207,49 @@ test("Test binding to custom events", function () {
     ok(testGenerateTable, "generateTable raised correctly");
     ok(testGenerateTableStart, "generateTableStart raised correctly");
     ok(testGenerateTableFinish, "generateTableFinish raised correctly");
+
+});
+
+test("Test month and year control generation and function", function () {
+
+    $('#qunit-fixture').append('<div id="target"></div>');
+    $('#target').scheduler({
+        yearMin: 2008,
+        yearMax: 2014,
+        classPrefix: 'something_'
+    });
+
+    var table = $('#target table');
+    var thead = table.find("thead tr th");
+    var caption = table.find("caption");
+    var i;
+
+    var date = new Date();
+
+    var monthOption = caption.find("#something_month option");
+    var yearOption = caption.find("#something_year option");
+
+    for (i = 0; i < 11; i++) {
+        equal($(monthOption[i]).html(), months[date.getMonth()],
+                        'Expect the html in the option at position ' + i + ' to be ' + months[date.getMonth()]);
+        date.setMonth(date.getMonth() + 1);
+    }
+
+    var date = new Date();
+
+    for (i = 0; i < 11; i++) {
+        equal($(monthOption[i]).attr('value'), date.getMonth(),
+                        'Expect the value in the option at position ' + i + ' to be ' + date.getMonth());
+        date.setMonth(date.getMonth() + 1);
+    }
+
+    var date = new Date();
+    date.setFullYear(2008);
+
+    for (i = 0; i < 7; i++) {
+        equal($(yearOption[i]).attr('value'), date.getFullYear(),
+                        'Expect the value in the option at position ' + i + ' to be ' + date.getFullYear());
+        date.setFullYear(date.getFullYear() + 1);
+    }
 
 });
