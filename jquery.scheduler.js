@@ -29,32 +29,28 @@
 
         var options = this.options;
 
-        var _generateTable = function(startDate, element){
+        var _generateTable = function(date, element){
 
             var hourNumber = (options.hourEnd - options.hourStart);
             var structure = '<table><caption>'+ options.prevButton;
             var startDay = (new Date(options.startDate)).getDay();
             var dateMin = new Date(options.dateMin);
             var dateMax = new Date(options.dateMax);
-            var date = new Date(startDate);           
+            var startDate = new Date(date);      
 
             if(startDate > dateMax){
-                date = new Date(dateMax);
+                startDate = new Date(dateMax);
+            }else if(startDate < dateMin){
+                startDate = new Date(dateMin);
             }
 
-            if(startDate < dateMin){
-                date = new Date(dateMin);
+            if(startDate.getDay() > startDay){
+                startDate.setDate((startDate.getDate() - (startDate.getDay() - startDay)));
+            }else if(startDate.getDay() < startDay){
+                startDate.setDate((startDate.getDate() + (startDay - startDate.getDay())));
             }
 
-            if(date.getDay() > startDay){
-                date.setDate((date.getDate() - (date.getDay() - startDay)));
-            }
-
-            if(date.getDay() < startDay){
-                date.setDate((date.getDate() + (startDay - date.getDay())));
-            }
-
-            var endDate = new Date(date);
+            var endDate = new Date(startDate);
             endDate.setDate(endDate.getDate() + 6);
             
             structure += options.nextButton + '<select id="' + options.classPrefix + 'month">';
@@ -63,11 +59,11 @@
             {
                 structure += '<option value="' + i;
                 
-                if(date.getMonth() === i){
+                if(startDate.getMonth() === i){
                     structure += '" selected="selected';
                 }
 
-                var tempDate = new Date(date);
+                var tempDate = new Date(startDate);
                 tempDate.setMonth(i);
 
                 if((tempDate > dateMax) || (tempDate < dateMin)){
@@ -79,13 +75,13 @@
 
             structure += '</select>';
 
-            structure += date.getDate() + ' - ' + endDate.getDate() + ', <select id="' + options.classPrefix + 'year">';
+            structure += startDate.getDate() + ' - ' + endDate.getDate() + ', <select id="' + options.classPrefix + 'year">';
 
             for(i=dateMin.getFullYear(); i <= dateMax.getFullYear(); i++)
             {
                 structure += '<option value="' + i;
 
-                if(date.getFullYear() === i){
+                if(startDate.getFullYear() === i){
                     structure += '" selected="selected';
                 }
                                
@@ -96,11 +92,11 @@
 
             for(i=0; i< 7; i++)
             {
-                structure += '<th data-date="' + date.getDate() +'" ';
-                structure += 'data-day="' + date.getDay() +'">';
-                structure += options.daysOfTheWeek[date.getDay()];
-                structure += '<span class="'+ options.classPrefix +'dateHeader">' + date.getDate() + '</span></th>';
-                date.setDate(date.getDate() + 1);
+                structure += '<th data-date="' + startDate.getDate() +'" ';
+                structure += 'data-day="' + startDate.getDay() +'">';
+                structure += options.daysOfTheWeek[startDate.getDay()];
+                structure += '<span class="'+ options.classPrefix +'dateHeader">' + startDate.getDate() + '</span></th>';
+                startDate.setDate(startDate.getDate() + 1);
             }
 
             structure += '</tr></thead><tbody>';            
