@@ -8,15 +8,17 @@ th, td {
 }
 
 th {
+    position : relative;
+    width : 100px;
+    padding : 6px;
+}
+
+caption, th {
     user-select: none; 
     -moz-user-select: none; 
     -khtml-user-select: none; 
     -webkit-user-select: none; 
     -o-user-select: none;
-
-    position : relative;
-    width : 100px;
-    padding : 6px;
 }
 
 tbody tr th {
@@ -25,7 +27,7 @@ tbody tr th {
 
 tbody td {
     height : 20px;
-    cursor : default;
+    cursor : cell;
 }
 
 thead th span {
@@ -44,4 +46,9 @@ caption {
     font-size : 12px;
     font-weight : normal;
     cursor : pointer;
+}
+
+.disabled {
+    background-color : lightGray;
+    cursor : not-allowed;
 }

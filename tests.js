@@ -365,3 +365,30 @@ test("Test changing months and years always results in first day of week being t
         'Expect the day of October to be Sunday, same as the day we switched from');
 
 });
+
+test("Test to see that the table cells that are outsdie the date range are successfully disabled", function () {
+
+    $('#qunit-fixture').append('<div id="target"></div>');
+
+    var x = $('#target').scheduler({
+        startDate: "Nov 15, 2011",
+        dateMin: "Oct 1, 2010",
+        dateMax: "Nov 30, 2011"
+    });
+
+    $('#month').val('8').change();
+    $('#year').val('2010').change();
+
+    var cells = x.find("tbody tr td").slice(0, 2);
+    var correctlyDisabled = true;
+
+    for (i = 0; i < cells.length; i++) {
+        if ($(cells[i]).attr("aria-disabled") !== "true") {
+            correctlyDisabled = false;
+        }
+    }
+
+    ok(correctlyDisabled,
+        'Expect this to be true since all of the tested tables should be aria-disabled');
+
+});

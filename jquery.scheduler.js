@@ -88,15 +88,17 @@
                 structure += '">' + i + '</option>';
             }
 
-            structure += '</caption><thead><tr><th></th>';            
+            structure += '</caption><thead><tr><th></th>';
+            
+            tempDate = new Date(startDate);            
 
             for(i=0; i< 7; i++)
             {
-                structure += '<th data-date="' + startDate.getDate() +'" ';
-                structure += 'data-day="' + startDate.getDay() +'">';
-                structure += options.daysOfTheWeek[startDate.getDay()];
-                structure += '<span class="'+ options.classPrefix +'dateHeader">' + startDate.getDate() + '</span></th>';
-                startDate.setDate(startDate.getDate() + 1);
+                structure += '<th data-date="' + tempDate.getDate() +'" ';
+                structure += 'data-day="' + tempDate.getDay() +'">';
+                structure += options.daysOfTheWeek[tempDate.getDay()];
+                structure += '<span class="'+ options.classPrefix +'dateHeader">' + tempDate.getDate() + '</span></th>';
+                tempDate.setDate(tempDate.getDate() + 1);
             }
 
             structure += '</tr></thead><tbody>';            
@@ -131,9 +133,18 @@
                     structure += hourDisplay + '</th>';
                 }
 
+                tempDate = new Date(startDate);
+
                 for(j=0; j < 7; j++)
                 {
-                    structure += '<td data-selected="false"></td>';
+                    structure += '<td data-selected="false"';
+
+                    if(tempDate < dateMin){
+                        structure += ' aria-disabled="true" class="' + options.classPrefix +'disabled"';
+                    }
+
+                    tempDate.setDate(tempDate.getDate() +1);
+                    structure += '></td>';
                 }
 
                 structure += '</tr>';
