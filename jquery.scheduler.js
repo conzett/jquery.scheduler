@@ -139,7 +139,7 @@
                 {
                     structure += '<td data-selected="false"';
 
-                    if(tempDate < dateMin){
+                    if((tempDate < dateMin) || (tempDate > dateMax)){
                         structure += ' aria-disabled="true" class="' + options.classPrefix +'disabled"';
                     }
 
