@@ -392,3 +392,113 @@ test("Test to see that the table cells that are outsdie the date range are succe
         'Expect this to be true since all of the tested tables should be aria-disabled');
 
 });
+
+test("Test for the presence of correct aria rolls", function () {
+
+    $('#qunit-fixture').append('<div id="target"></div>');
+
+    var x = $('#target').scheduler({
+        startDate: "Nov 15, 2011",
+        dateMin: "Oct 1, 2010",
+        dateMax: "Nov 30, 2011",
+        classPrefix: 'test_'
+    });
+
+    var bodyRows = x.find("tbody tr");
+    var bodyCells = x.find("tbody td");
+    var headCells = x.find("thead th");
+    var bodyHeaders = x.find("tbody th");
+    var table = x.find("table");
+    var haveCorectRowID = true;
+    var haveCorectHeadID = true;
+    var haveRoleRow = true;
+    var haveRoleGridCell = true;
+    var haveCorrectScopeRow = true;
+    var haveCorrectScopeColumn = true;
+    var haveCorrectRoleRowHeader = true;
+    var haveCorrectRoleColumnHeader = true;
+    var haveCorrectRowHeader = true;
+    var haveCorrectLabelledBy = true;
+
+    for (i = 0; i < bodyRows.length; i++) {
+        if ($(bodyRows[i]).attr("id") != ("test_row" + i)) {
+            haveCorectRowID = false;
+        }
+        if ($(bodyRows[i]).attr("role") != "row") {
+            haveRoleRow = false;
+        }
+
+        var temp = $(bodyRows[i]).find("td");
+        var j;
+
+        for (j = 1; j < 8; j++) {
+            if ($(temp[j]).attr("aria-labelledby") != ("test_column" + j + " test_rowheader" + (i % 2))) {
+                haveCorrectLabelledBy = false;
+            }
+        }
+    }
+
+    for (i = 0; i < bodyCells.length; i++) {
+        if ($(bodyRows[i]).attr("role") != "gridcell") {
+            haveRoleGridCell = false;
+        }
+    }
+
+    for (i = 1; i < bodyCells.length; i++) {
+        if ($(headCells[i]).attr("id") != ("test_column" + i)) {
+            haveCorectHeadID = false;
+        }
+        if ($(headCells[i]).attr("role") != "columnheader") {
+            haveCorrectRoleColumnHeader = false;
+        }
+        if ($(bodyHeaders[i]).attr("scope") != "column") {
+            haveCorrectScopeColumn = false;
+        }
+    }
+
+    for (i = 0; i < bodyHeaders.length; i++) {
+        if ($(bodyHeaders[i]).attr("scope") != "row") {
+            haveCorrectScopeRow = false;
+        }
+        if ($(bodyHeaders[i]).attr("role") != "rowheader") {
+            haveCorrectRoleRowHeader = false;
+        }
+        if ($(bodyHeaders[i]).attr("id") != ("test_rowheader" + i)) {
+            haveCorrectRowHeader = false;
+        }
+    }
+
+    ok(haveCorectRowID,
+        'Expect this to be true since all of the rows in the table body should have their correct IDs based on index');
+
+    ok(haveRoleRow,
+        'Expect this to be true since all of the rows in the table body should have the role "row"');
+
+    ok(haveRoleGridCell,
+        'Expect this to be true since all of the table cells in the table body should have the role "gridcell"');
+
+    ok(haveCorectHeadID,
+        'Expect this to be true since all of the header elements should have their correct IDs based on index');
+
+    equal($(table).attr('role'), 'grid',
+        'Expect the table to have a role of "grid"');
+
+    ok(haveCorrectRoleColumnHeader,
+        'Expect this to be true since all of the column header elements should have the role "columnheader"');
+
+    ok(haveCorrectScopeColumn,
+        'Expect this to be true since all of the column header elements should have the scope "column"');
+
+    ok(haveCorrectRoleRowHeader,
+        'Expect this to be true since all of the row header elements should have the aria role "rowheader"');
+
+    ok(haveCorrectScopeRow,
+        'Expect this to be true since all of the row header elements should have the scope "row"');
+
+    ok(haveCorrectRowHeader,
+        'Expect this to be true since all of the row header elements should have an ID that can be used for labeling');
+
+    ok(haveCorrectLabelledBy,
+        'Expect this to be true since all of the rows should have a labelledby attribute that is correct');
+
+});
