@@ -277,7 +277,7 @@ test("Test month and year control generation", function () {
 test("Test month and year control useage", function () {
 
     $('#qunit-fixture').append('<div id="target"></div>');
-    var x = $('#target').scheduler({ startDate: "Dec 9, 2010", classPrefix: "test_" });
+    var x = $('#target').scheduler({ startDate: "Jun 9, 2010", classPrefix: "test_" });
 
     var table = $('#target table');
     var thead = table.find("thead tr th");
@@ -290,8 +290,8 @@ test("Test month and year control useage", function () {
     var selectedAttrVal;
 
 
-    $(monthList).val('3').change();
-    selectedAttrVal = $('#test_month').find('option[value="3"]').attr('selected');
+    $(monthList).val('8').change();
+    selectedAttrVal = $('#test_month').find('option[value="8"]').attr('selected');
     equal(selectedAttrVal, "selected", 'Expect the correct changed month to be selected');
 
     selectedAttrVal = undefined;
@@ -303,14 +303,14 @@ test("Test month and year control useage", function () {
 
 });
 
-test("Test disabled controls with the min and max date parameters", function () {
+test("Test disabled month and year controls with the min and max date parameters", function () {
 
     $('#qunit-fixture').append('<div id="target"></div>');
 
     var x = $('#target').scheduler({
         startDate: "Nov 15, 2011",
         dateMin: "Oct 1, 2010",
-        dateMax: "Nov 31, 2011"
+        dateMax: "Nov 30, 2011"
     });
 
     var monthOptions = $('#month option');
@@ -320,9 +320,28 @@ test("Test disabled controls with the min and max date parameters", function () 
 
     $('#year').val('2010').change();
 
-    var monthOptions = $('#month option');
+    monthOptions = $('#month option');
 
     equal($(monthOptions[11]).attr('disabled'), undefined,
         'After decrementing the year expect the month of December to NOT be disabled since it falls inside the dateMax range');
+
+    equal($(monthOptions[8]).attr('disabled'), "disabled",
+        'After decrementing the year expect the month of September to be disabled since it falls outside the dateMin range');
+
+    $('#month').val('11').change();
+    $('#year').val('2011').change();
+
+    monthOptions = $('#month option');
+
+    equal($(monthOptions).filter(":selected").val(), "10",
+        'After changing the month past the max year month, then changing the year selected month should be that of the max month');
+
+    $('#month').val('5').change();
+    $('#year').val('2010').change();
+
+    monthOptions = $('#month option');
+
+    equal($(monthOptions).filter(":selected").val(), "9",
+        'After changing the month before the min year month, then changing the year selected month should be that of the min month');
 
 });

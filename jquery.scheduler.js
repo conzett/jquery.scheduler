@@ -33,9 +33,32 @@
             var hourNumber = (options.hourEnd - options.hourStart);
             var structure = '<table><caption>'+ options.prevButton;
             var date = new Date(startDate);
+            var day = (new Date(startDate)).getDay();
             var endDate = new Date(startDate);
             var dateMin = new Date(options.dateMin);
             var dateMax = new Date(options.dateMax);
+
+            if(startDate > dateMax){
+                date = new Date(dateMax);
+                var tempDay = date.getDay();
+                if(tempDay > day){
+                    date.setDate((date.getDate() + day))
+                }
+                if(tempDay < day){
+                    date.setDate((date.getDate() - day))
+                }
+            }
+
+            if(startDate < dateMin){
+                date = new Date(dateMin);
+                var tempDay = date.getDay();
+                if(tempDay > day){
+                    date.setDate((date.getDate() + day))
+                }
+                if(tempDay < day){
+                    date.setDate((date.getDate() - day))
+                }
+            }
 
             endDate.setDate(endDate.getDate() + 6);
             
@@ -49,10 +72,10 @@
                     structure += '" selected="selected';
                 }
 
-                var tempDate = new Date(startDate);
+                var tempDate = new Date(date);
                 tempDate.setMonth(i);
 
-                if(tempDate > dateMax){
+                if((tempDate > dateMax) || (tempDate < dateMin)){
                     structure += '" disabled="disabled';
                 }
                 
