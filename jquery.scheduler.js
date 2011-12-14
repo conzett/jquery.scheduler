@@ -13,7 +13,7 @@
             classPrefix : '',
             prevButton : '<span id="prev">Previous</span>',
             nextButton : '<span id="next">Next</span>',
-            dateMin : undefined,
+            dateMin : undefined, // default value set when plugin initializes
             dateMax : (new Date()).setFullYear((new Date()).getFullYear() + 4)
         };
 
@@ -26,40 +26,35 @@
         this._name = pluginName;
                 
         this.options.dateMin = this.options.dateMin || this.options.startDate;
+
         var options = this.options;
 
         var _generateTable = function(startDate, element){
 
             var hourNumber = (options.hourEnd - options.hourStart);
             var structure = '<table><caption>'+ options.prevButton;
-            var date = new Date(startDate);
-            var day = (new Date(startDate)).getDay();
-            var endDate = new Date(startDate);
+            var startDay = (new Date(options.startDate)).getDay();
             var dateMin = new Date(options.dateMin);
             var dateMax = new Date(options.dateMax);
+            var date = new Date(startDate);           
 
             if(startDate > dateMax){
                 date = new Date(dateMax);
-                var tempDay = date.getDay();
-                if(tempDay > day){
-                    date.setDate((date.getDate() + day))
-                }
-                if(tempDay < day){
-                    date.setDate((date.getDate() - day))
-                }
             }
 
             if(startDate < dateMin){
                 date = new Date(dateMin);
-                var tempDay = date.getDay();
-                if(tempDay > day){
-                    date.setDate((date.getDate() + day))
-                }
-                if(tempDay < day){
-                    date.setDate((date.getDate() - day))
-                }
             }
 
+            if(date.getDay() > startDay){
+                date.setDate((date.getDate() - (date.getDay() - startDay)));
+            }
+
+            if(date.getDay() < startDay){
+                date.setDate((date.getDate() + (startDay - date.getDay())));
+            }
+
+            var endDate = new Date(date);
             endDate.setDate(endDate.getDate() + 6);
             
             structure += options.nextButton + '<select id="' + options.classPrefix + 'month">';

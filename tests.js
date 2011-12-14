@@ -341,7 +341,27 @@ test("Test disabled month and year controls with the min and max date parameters
 
     monthOptions = $('#month option');
 
-    equal($(monthOptions).filter(":selected").val(), "9",
-        'After changing the month before the min year month, then changing the year selected month should be that of the min month');
+    equal($(monthOptions).filter(":selected").val(), 8,
+        'After changing the month before the min year month, then changing the year selected month should be that of September the previous month since the min months starts in the middle of the week for these test dates');
+
+    equal($(monthOptions).filter(":selected").attr("disabled"), "disabled",
+        'It should be disabled even though it is selected because it is a partial week');
+
+});
+
+test("Test changing months and years always results in first day of week being the same", function () {
+
+    $('#qunit-fixture').append('<div id="target"></div>');
+
+    var x = $('#target').scheduler({
+        startDate: "Nov 13, 2011"
+    });
+
+    $('#month').val('9').change();
+
+    var thead = x.find("thead tr th");
+
+    equal($(thead[1]).attr('data-day'), 0,
+        'Expect the day of October to be Sunday, same as the day we switched from');
 
 });
