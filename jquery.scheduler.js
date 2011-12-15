@@ -50,6 +50,8 @@
                 startDate.setDate((startDate.getDate() + (startDay - startDate.getDay())));
             }
 
+            element.currentDate = startDate;
+
             var endDate = new Date(startDate);
             endDate.setDate(endDate.getDate() + 6);
             
