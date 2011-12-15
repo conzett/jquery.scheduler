@@ -32,7 +32,7 @@
         var _generateTable = function(date, element){
 
             var hourNumber = (options.hourEnd - options.hourStart);
-            var structure = '<table role="grid" aria-multiselectable="true"><caption>'+ options.prevButton;
+            var structure = '<table role="grid" aria-multiselectable="true"><caption>';
             var startDay = (new Date(options.startDate)).getDay();
             var dateMin = new Date(options.dateMin);
             var dateMax = new Date(options.dateMax);
@@ -53,7 +53,7 @@
             var endDate = new Date(startDate);
             endDate.setDate(endDate.getDate() + 6);
             
-            structure += options.nextButton + '<select id="' + options.classPrefix + 'month">';
+            structure += '<select id="' + options.classPrefix + 'month">';
 
             for(i=0; i< 12; i++)
             {
@@ -154,16 +154,19 @@
             }
             
             structure += '</tbody></table>';
+            
+            var nextButton = $(options.nextButton);
+            var prevButton = $(options.prevButton);
 
-            $(element).html(structure);
-
-            $(element).find('#' + $(options.nextButton).attr('id')).click(function() {
+            nextButton.click(function() {
                 $(element).trigger('incrementWeek');
             });
 
-            $(element).find('#' + $(options.prevButton).attr('id')).click(function() {
+            prevButton.click(function() {
                 $(element).trigger('decrementWeek');
             });
+
+            $(element).html(structure);
 
             $(element).find('#' + options.classPrefix + "month").change(function() {
                 $(element).trigger('changeMonth');
@@ -172,6 +175,8 @@
             $(element).find('#' + options.classPrefix + "year").change(function() {
                 $(element).trigger('changeYear');
             });
+            
+            $(element).find("caption").prepend(prevButton, nextButton);         
         };
 
         this.element.currentDate = new Date(this.options.startDate);

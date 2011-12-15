@@ -3,6 +3,15 @@ var nextButton = '<span id="next">Next</span>';
 var daysOfTheWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
+function pausecomp(millis) {
+    console.log("pausing");
+    var date = new Date();
+    var curDate = null;
+
+    do { curDate = new Date(); }
+    while (curDate - date < millis);
+} 
+
 test("Table markup generation with deafult options", function () {
 
     $('#qunit-fixture').append('<div id="target"></div>');
@@ -494,5 +503,42 @@ test("Test for the presence of correct aria rolls", function () {
 
     ok(haveCorrectLabelledBy,
         'Expect this to be true since all of the rows should have a labelledby attribute that is correct');
+
+});
+
+test("Test passing in custom buttons for previous and next", function () {
+
+    $('#qunit-fixture').append('<div id="target"></div>');
+
+    var x = $('#target').scheduler({
+        startDate: "Nov 13, 2011",
+        prevButton: "<button>Previous</button>",
+        nextButton: "<button>Next</button>"
+    });
+
+    var buttons = $('caption').find("button");
+    var headers = $("thead th");
+
+    equal(buttons.length, 2,
+        'Expect two buttons inserted into the caption element');
+
+    var firstDate = $(headers[1]).attr("data-date");
+
+    $(buttons[1]).click();
+
+    headers = $("thead th");
+
+    var secondDate = $(headers[1]).attr("data-date");
+
+    equal((secondDate - firstDate), 7,
+        'Expect the date to be the next weeks date after the next button is clicked');
+
+    buttons = $('caption').find("button");
+    $(buttons[0]).click();
+
+    var newDate = $($("thead th")[1]).attr("data-date");
+
+    equal(newDate, firstDate,
+        'Expect the date to be back to the current date after the previous button is clicked');
 
 });
