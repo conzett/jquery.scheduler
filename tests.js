@@ -421,7 +421,7 @@ test("Test for the presence of correct aria rolls", function () {
     var haveCorrectLabelledBy = true;
 
     for (i = 0; i < bodyRows.length; i++) {
-        if ($(bodyRows[i]).attr("id") != ("test_row" + i)) {
+        if ($(bodyRows[i]).attr("id") != ("test_row" + (i+1))) {
             haveCorectRowID = false;
         }
         if ($(bodyRows[i]).attr("role") != "row") {
@@ -431,27 +431,24 @@ test("Test for the presence of correct aria rolls", function () {
         var temp = $(bodyRows[i]).find("td");
         var j;
 
-        for (j = 1; j < 8; j++) {
-            if ($(temp[j]).attr("aria-labelledby") != ("test_column" + j + " test_rowheader" + (i % 2))) {
+        for (j = 0; j < 7; j++) {
+            if ($(temp[j]).attr("aria-labelledby") != ("test_column" + (j+1) + " test_row" + i)) {
                 haveCorrectLabelledBy = false;
+            }
+            if ($(temp[j]).attr("role") != "gridcell") {
+                haveRoleGridCell = false;
             }
         }
     }
 
-    for (i = 0; i < bodyCells.length; i++) {
-        if ($(bodyRows[i]).attr("role") != "gridcell") {
-            haveRoleGridCell = false;
-        }
-    }
-
-    for (i = 1; i < bodyCells.length; i++) {
+    for (i = 1; i < headCells.length; i++) {
         if ($(headCells[i]).attr("id") != ("test_column" + i)) {
             haveCorectHeadID = false;
         }
         if ($(headCells[i]).attr("role") != "columnheader") {
             haveCorrectRoleColumnHeader = false;
         }
-        if ($(bodyHeaders[i]).attr("scope") != "column") {
+        if ($(headCells[i]).attr("scope") != "column") {
             haveCorrectScopeColumn = false;
         }
     }
@@ -462,9 +459,6 @@ test("Test for the presence of correct aria rolls", function () {
         }
         if ($(bodyHeaders[i]).attr("role") != "rowheader") {
             haveCorrectRoleRowHeader = false;
-        }
-        if ($(bodyHeaders[i]).attr("id") != ("test_rowheader" + i)) {
-            haveCorrectRowHeader = false;
         }
     }
 
@@ -483,6 +477,9 @@ test("Test for the presence of correct aria rolls", function () {
     equal($(table).attr('role'), 'grid',
         'Expect the table to have a role of "grid"');
 
+    equal($(table).attr('aria-multiselectable'), 'true',
+        'Expect the table to have aria-multiselectable set to "true"');
+
     ok(haveCorrectRoleColumnHeader,
         'Expect this to be true since all of the column header elements should have the role "columnheader"');
 
@@ -494,9 +491,6 @@ test("Test for the presence of correct aria rolls", function () {
 
     ok(haveCorrectScopeRow,
         'Expect this to be true since all of the row header elements should have the scope "row"');
-
-    ok(haveCorrectRowHeader,
-        'Expect this to be true since all of the row header elements should have an ID that can be used for labeling');
 
     ok(haveCorrectLabelledBy,
         'Expect this to be true since all of the rows should have a labelledby attribute that is correct');

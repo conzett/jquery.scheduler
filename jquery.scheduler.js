@@ -32,7 +32,7 @@
         var _generateTable = function(date, element){
 
             var hourNumber = (options.hourEnd - options.hourStart);
-            var structure = '<table><caption>'+ options.prevButton;
+            var structure = '<table role="grid" aria-multiselectable="true"><caption>'+ options.prevButton;
             var startDay = (new Date(options.startDate)).getDay();
             var dateMin = new Date(options.dateMin);
             var dateMax = new Date(options.dateMax);
@@ -94,7 +94,8 @@
 
             for(i=0; i< 7; i++)
             {
-                structure += '<th data-date="' + tempDate.getDate() +'" ';
+                structure += '<th id="'+ options.classPrefix + 'column' + (i+1) + '" scope="column" ';
+                structure += 'role="columnheader" data-date="' + tempDate.getDate() +'" ';
                 structure += 'data-day="' + tempDate.getDay() +'">';
                 structure += options.daysOfTheWeek[tempDate.getDay()];
                 structure += '<span class="'+ options.classPrefix +'dateHeader">' + tempDate.getDate() + '</span></th>';
@@ -105,7 +106,7 @@
             
             for(i=0; i < (hourNumber*options.hourDivisions); i++)
             {
-                structure += '<tr>';
+                structure += '<tr role="row" id="' + options.classPrefix + 'row' + (i+1) + '">';
 
                 if((i % options.hourDivisions) === 0){
 
@@ -129,7 +130,7 @@
                         hourDisplay = hour + ':00';
                     }
 
-                    structure += '<th rowspan="' + options.hourDivisions + '" data-hour="' + hour + '">';
+                    structure += '<th role="rowheader" scope="row" rowspan="' + options.hourDivisions + '" data-hour="' + hour + '">';
                     structure += hourDisplay + '</th>';
                 }
 
@@ -137,7 +138,9 @@
 
                 for(j=0; j < 7; j++)
                 {
-                    structure += '<td data-selected="false"';
+                    structure += '<td role="gridcell" aria-selected="false" aria-labelledby="';
+                    structure += options.classPrefix + 'column' + (j+1) + ' ';
+                    structure += options.classPrefix + 'row' + i + '"';
 
                     if((tempDate < dateMin) || (tempDate > dateMax)){
                         structure += ' aria-disabled="true" class="' + options.classPrefix +'disabled"';
