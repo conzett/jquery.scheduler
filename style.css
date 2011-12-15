@@ -48,7 +48,7 @@ caption {
     cursor : pointer;
 }
 
-.disabled {
+td.disabled {
     background-color : lightGray;
     cursor : not-allowed;
 }

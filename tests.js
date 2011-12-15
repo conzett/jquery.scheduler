@@ -3,15 +3,6 @@ var nextButton = '<span id="next">Next</span>';
 var daysOfTheWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-function pausecomp(millis) {
-    console.log("pausing");
-    var date = new Date();
-    var curDate = null;
-
-    do { curDate = new Date(); }
-    while (curDate - date < millis);
-} 
-
 test("Table markup generation with deafult options", function () {
 
     $('#qunit-fixture').append('<div id="target"></div>');
@@ -541,4 +532,116 @@ test("Test passing in custom buttons for previous and next", function () {
     equal(newDate, firstDate,
         'Expect the date to be back to the current date after the previous button is clicked');
 
+});
+
+test("Test disabling previous and next buttons when they are non-button elements", function () {
+
+    $('#qunit-fixture').append('<div id="target"></div>');
+
+    var x = $('#target').scheduler({
+        startDate: "Nov 13, 2011",
+        prevButton: '<span id="prev">Prev</span>',
+        nextButton: '<span id="next">Next</span>'
+    });
+
+    var disabled = $("#prev").attr("aria-disabled");
+
+    equals(disabled, "true",
+        'Expect the default state of the previous button to be disabled if we do not specify a mindate since that will equal the start day');
+
+});
+
+test("Test disabling previous and next buttons when they are button elements", function () {
+
+    $('#qunit-fixture').append('<div id="target"></div>');
+
+    var x = $('#target').scheduler({
+        startDate: "Nov 13, 2011",
+        prevButton: '<button id="prev">Prev</button>',
+        nextButton: '<button id="next">Next</button>'
+    });
+
+    var disabled = $("#prev").attr("disabled");
+
+    equals(disabled, "disabled", 
+        'Expect the default state of the previous button to be disabled if we do not specify a mindate since that will equal the start day');
+
+});
+
+test("Test disabling previous and next buttons when they are non-button elements and the start date is greater than the dateMin", function () {
+
+    $('#qunit-fixture').append('<div id="target"></div>');
+
+    var x = $('#target').scheduler({
+        startDate: "Nov 13, 2011",
+        dateMin: "Nov 7, 2011",
+        dateMax: "Nov 19, 2011",
+        prevButton: '<span id="prev">Prev</span>',
+        nextButton: '<span id="next">Next</span>'
+    });
+
+    var disabled = $("#prev").attr("aria-disabled");
+
+    equals(disabled, "false",
+        'Expect the default state of the previous button to not be disabled since the dateMin is lower than the start date');
+
+    $("#prev").click();
+
+    disabled = $("#prev").attr("aria-disabled");
+
+    ok(disabled,
+        'After clicking, Expect the state of the previous button to be disabled since we have reached the end of the calendar');
+
+    $("#next").click();
+
+    disabled = $("#prev").attr("aria-disabled");
+
+    equals(disabled, "false",
+        'After clicking next, Expect the state of the previous button to not be disabled since we have gone forward again');
+
+    $("#next").click();
+
+    disabled = $("#next").attr("aria-disabled");
+
+    ok(disabled,
+        'After clicking next again, Expect the state of the next button to be disabled since we have gone to the dateMax');
+});
+
+test("Test disabling previous and next buttons when they are button elements and the start date is greater than the dateMin", function () {
+
+    $('#qunit-fixture').append('<div id="target"></div>');
+
+    var x = $('#target').scheduler({
+        startDate: "Nov 13, 2011",
+        dateMin: "Nov 7, 2011",
+        dateMax: "Nov 19, 2011",
+        prevButton: '<button id="prev">Prev</button>',
+        nextButton: '<button id="next">Next</button>'
+    });
+
+    var disabled = $("#prev").attr("disabled");
+
+    equals(disabled, undefined,
+        'Expect the default state of the previous button to be undefined since the dateMin is lower than the start date');
+
+    $("#prev").click();
+
+    disabled = $("#prev").attr("disabled");
+
+    equals(disabled, "disabled",
+        'After clicking, Expect the state of the previous button to be disabled since we have reached the end of the calendar');
+
+    $("#next").click();
+
+    disabled = $("#prev").attr("disabled");
+
+    equals(disabled, undefined,
+        'After clicking next, Expect the state of the previous button to be undefined since we have gone forward again');
+
+    $("#next").click();
+
+    disabled = $("#next").attr("disabled");
+
+    equals(disabled, "disabled",
+        'After clicking next again, Expect the state of the next button to be disabled since we have gone to the dateMax');
 });

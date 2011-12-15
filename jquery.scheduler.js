@@ -158,12 +158,36 @@
             var nextButton = $(options.nextButton);
             var prevButton = $(options.prevButton);
 
+            if(startDate <= dateMin){
+                if(prevButton.is(':button')){
+                    prevButton.attr('disabled', 'disabled');
+                }else{
+                    prevButton.attr('aria-disabled', 'true').addClass(options.classPrefix +'disabled');
+                }
+            }else if(prevButton.not(':button')){
+                prevButton.attr('aria-disabled', 'false');
+            }
+
+            if(endDate >= dateMax){
+                if(nextButton.is(':button')){
+                    nextButton.attr('disabled', 'disabled');
+                }else{
+                    nextButton.attr('aria-disabled', 'true').addClass(options.classPrefix +'disabled');
+                }
+            }else if(nextButton.not(':button')){
+                nextButton.attr('aria-disabled', 'false');
+            }
+
             nextButton.click(function() {
-                $(element).trigger('incrementWeek');
+                if($(this).attr("aria-disabled") != "true"){
+                    $(element).trigger('incrementWeek');
+                }
             });
 
             prevButton.click(function() {
-                $(element).trigger('decrementWeek');
+                if($(this).attr("aria-disabled") != "true"){
+                    $(element).trigger('decrementWeek');
+                }
             });
 
             $(element).html(structure);
