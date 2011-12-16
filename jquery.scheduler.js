@@ -140,7 +140,7 @@
 
                 for(j=0; j < 7; j++)
                 {
-                    structure += '<td role="gridcell" aria-selected="false" aria-labelledby="';
+                    structure += '<td role="gridcell" data-column="'+ j +'" aria-selected="false" aria-labelledby="';
                     structure += options.classPrefix + 'column' + (j+1) + ' ';
                     structure += options.classPrefix + 'row' + i + '"';
 
@@ -205,18 +205,23 @@
             $(element).find("caption").prepend(prevButton, nextButton);
             
             $(element).find('[role="gridcell"]').not('[aria-disabled="true"]').mousedown(function() {
+                
                 $(element).trigger('selectStart');               
                 $(this).attr("aria-selected", "true").addClass(options.classPrefix + "selected");
+                element.selectedColumn = $(this).attr("data-column");
+
             }).mouseup(function() {
                 $(element).trigger('selectFinish');
             }).mouseover(function() {
-                var selected = $(this).attr("aria-selected");
-
                 if(element.selecting === true){
-                    if(selected === "false"){
-                        $(this).attr("aria-selected", "true").addClass(options.classPrefix + "selected");
-                    }else{
-                        $(this).attr("aria-selected", "false").removeClass(options.classPrefix + "selected");
+                    var column = $(this).attr("data-column");
+                    if(column === element.selectedColumn){
+                        var selected = $(this).attr("aria-selected");
+                        if(selected === "false"){
+                            $(this).attr("aria-selected", "true").addClass(options.classPrefix + "selected");
+                        }else{
+                            $(this).attr("aria-selected", "false").removeClass(options.classPrefix + "selected");
+                        }
                     }
                 }
             });    
@@ -228,6 +233,8 @@
 
         this.element.currentDate = new Date(this.options.startDate);
         this.element.selecting = false;
+        this.element.selected = new Array;
+        this.element.selectedColumn;
 
         this.element.generateTable = function() {
             $(this).trigger('generateTableStart');
@@ -256,6 +263,7 @@
         }
 
         this.element.selectStart = function() {
+            this.selectedColumn = "";
             this.selecting = true;
             _resetSelection(this);
         }
