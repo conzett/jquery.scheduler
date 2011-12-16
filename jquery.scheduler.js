@@ -208,11 +208,16 @@
             $(element).find("caption").prepend(prevButton, nextButton);
             
             $(element).find('[role="gridcell"]').not('[aria-disabled="true"]').mousedown(function() {                
-                $(element).trigger('selectStart');               
+                $(element).trigger('selectStart');
+                element.selectedColumn = "";
+                element.selecting = true;
+                _resetSelection(element);               
                 $(this).attr("aria-selected", "true").addClass(options.classPrefix + "selected");
                 element.selectedColumn = $(this).attr("data-column");
                 element.selected.dateStart = $(this).attr("data-dateTime");
             }).mouseup(function() {
+                element.selecting = false;
+                element.selected = _getSelectedRange();
                 $(element).trigger('selectFinish');
             }).mouseover(function() {
                 if(element.selecting === true){
@@ -236,7 +241,7 @@
 
         var _getSelectedRange =  function(){
             var adjustedEndDate = new Date(element.selected.dateEnd);
-            adjustedEndDate.setMinutes(60/options.hourDivisions) //adjust to be the true "end" time;
+            adjustedEndDate.setMinutes(adjustedEndDate.getMinutes() + (60/options.hourDivisions)); //adjust to be the true "end" time
             return {dateStart: new Date(element.selected.dateStart), dateEnd: adjustedEndDate }
         }
 
@@ -271,16 +276,9 @@
             $(this).trigger('generateTable');
         }
 
-        this.element.selectStart = function() {
-            this.selectedColumn = "";
-            this.selecting = true;
-            _resetSelection(this);
-        }
+        this.element.selectStart = function() {}
 
-        this.element.selectFinish = function() {
-            this.selecting = false;
-            this.selected = _getSelectedRange();
-        }
+        this.element.selectFinish = function() {}
 
         this.init();        
     }
