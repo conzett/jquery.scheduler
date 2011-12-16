@@ -645,38 +645,3 @@ test("Test disabling previous and next buttons when they are button elements and
     equals(disabled, "disabled",
         'After clicking next again, Expect the state of the next button to be disabled since we have gone to the dateMax');
 });
-
-test("Test clicking on a grid cell", function () {
-
-    $('#qunit-fixture').append('<div id="target"></div>');
-
-    var x = $('#target').scheduler();
-    var gridcell = $(x).find("td")[0];
-    var selected = $(gridcell).attr("aria-selected");
-    var selectStart = false;
-    var selectFinish = false;
-
-    x.bind("selectStart", function (event) {
-        selectStart = true;
-    });
-
-    x.bind("selectFinish", function (event) {
-        selectFinish = true;
-    });
-
-    equals(selected, "false",
-        'The default state should be unselected');
-
-    $(gridcell).mousedown();
-    $(gridcell).mouseup();
-
-    selected = $(gridcell).attr("aria-selected");
-
-    equals(selected, "true",
-        'after clicking the gridcell should be selected');
-
-    ok(selectStart, 'Should be true because the selectStart event is correctly bound to');
-
-    ok(selectFinish, 'Should be false because the selectFinish event is correctly bound to');
-
-});

@@ -35,6 +35,10 @@
 
         });
 
+        x.bind("selectFinish", function (event) {
+            console.log(this.selected.dateStart.toString() + "---->" + this.selected.dateEnd.toString());
+        });
+
         var startTime;
 
         x.bind("generateTableStart", function (event) {
