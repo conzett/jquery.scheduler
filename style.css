@@ -11,9 +11,10 @@ th {
     position : relative;
     width : 100px;
     padding : 6px;
+    cursor : default;
 }
 
-caption, th {
+caption, th, td {
     user-select: none; 
     -moz-user-select: none; 
     -khtml-user-select: none; 
@@ -51,4 +52,8 @@ caption {
 td.disabled {
     background-color : lightGray;
     cursor : not-allowed;
+}
+
+td.selected {
+    background-color : lightBlue;
 }

@@ -202,10 +202,33 @@
                 $(element).trigger('changeYear');
             });
             
-            $(element).find("caption").prepend(prevButton, nextButton);         
+            $(element).find("caption").prepend(prevButton, nextButton);
+            
+            $(element).find('[role="gridcell"]').mousedown(function() {
+                $(element).trigger('selectStart');
+                $(element).find('[role="gridcell"]').attr("aria-selected", "false").removeClass(options.classPrefix + "selected");
+                $(this).attr("aria-selected", "true").addClass(options.classPrefix + "selected");
+            });
+            
+            $(element).find('[role="gridcell"]').mouseup(function() {
+                $(element).trigger('selectFinish');
+            });
+            
+            $(element).find('[role="gridcell"]').mouseover(function() {
+                var selected = $(this).attr("aria-selected");
+
+                if(element.selecting === true){
+                    if(selected === "false"){
+                        $(this).attr("aria-selected", "true").addClass(options.classPrefix + "selected");
+                    }else{
+                        $(this).attr("aria-selected", "false").removeClass(options.classPrefix + "selected");
+                    }
+                }
+            });    
         };
 
         this.element.currentDate = new Date(this.options.startDate);
+        this.element.selecting = false;
 
         this.element.generateTable = function() {
             $(this).trigger('generateTableStart');
@@ -231,6 +254,14 @@
         this.element.changeYear = function() {
             this.currentDate.setFullYear($('#' + options.classPrefix + "year").val());
             $(this).trigger('generateTable');
+        }
+
+        this.element.selectStart = function() {
+            this.selecting = true;
+        }
+
+        this.element.selectFinish = function() {
+            this.selecting = false;
         }
 
         this.init();        
