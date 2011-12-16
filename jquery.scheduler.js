@@ -215,6 +215,7 @@
                 $(this).attr("aria-selected", "true").addClass(options.classPrefix + "selected");
                 element.selectedColumn = $(this).attr("data-column");
                 element.selected.dateStart = $(this).attr("data-dateTime");
+                element.selected.dateEnd = $(this).attr("data-dateTime");
             }).mouseup(function() {
                 element.selecting = false;
                 element.selected = _getSelectedRange();

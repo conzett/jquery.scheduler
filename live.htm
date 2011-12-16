@@ -36,7 +36,17 @@
         });
 
         x.bind("selectFinish", function (event) {
-            console.log(this.selected.dateStart.toString() + "---->" + this.selected.dateEnd.toString());
+            var date = this.selected.dateStart.getDate();
+            var year = this.selected.dateStart.getFullYear();
+            var month = this.selected.dateStart.getMonth();
+            var fromHour = this.selected.dateStart.getHours();
+            var fromMinutes = this.selected.dateStart.getMinutes();
+            var toHour = this.selected.dateEnd.getHours();
+            var toMinutes = this.selected.dateEnd.getMinutes();
+
+            var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+            confirm("Schedule event for " + months[month] + " " + date + ", " + year + " from " + fromHour + ":" + fromMinutes + " to " + toHour + ":" + toMinutes + "?");
         });
 
         var startTime;
