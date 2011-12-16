@@ -204,17 +204,12 @@
             
             $(element).find("caption").prepend(prevButton, nextButton);
             
-            $(element).find('[role="gridcell"]').mousedown(function() {
-                $(element).trigger('selectStart');
-                $(element).find('[role="gridcell"]').attr("aria-selected", "false").removeClass(options.classPrefix + "selected");
+            $(element).find('[role="gridcell"]').not('[aria-disabled="true"]').mousedown(function() {
+                $(element).trigger('selectStart');               
                 $(this).attr("aria-selected", "true").addClass(options.classPrefix + "selected");
-            });
-            
-            $(element).find('[role="gridcell"]').mouseup(function() {
+            }).mouseup(function() {
                 $(element).trigger('selectFinish');
-            });
-            
-            $(element).find('[role="gridcell"]').mouseover(function() {
+            }).mouseover(function() {
                 var selected = $(this).attr("aria-selected");
 
                 if(element.selecting === true){
@@ -226,6 +221,10 @@
                 }
             });    
         };
+
+        var _resetSelection = function(element){
+             $(element).find('[role="gridcell"]').attr("aria-selected", "false").removeClass(options.classPrefix + "selected");
+        }
 
         this.element.currentDate = new Date(this.options.startDate);
         this.element.selecting = false;
@@ -258,6 +257,7 @@
 
         this.element.selectStart = function() {
             this.selecting = true;
+            _resetSelection(this);
         }
 
         this.element.selectFinish = function() {
