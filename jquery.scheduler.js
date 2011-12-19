@@ -97,42 +97,51 @@
             for(i=0; i< 7; i++)
             {
                 structure += '<th id="'+ options.classPrefix + 'column' + (i+1) + '" scope="column" ';
-                structure += 'role="columnheader" data-date="' + tempDate.getDate() +'" ';
-                structure += 'data-day="' + tempDate.getDay() +'">';
+                structure += 'role="columnheader"><time datetime="' + tempDate.toDateString() +'">';
                 structure += options.daysOfTheWeek[tempDate.getDay()];
-                structure += '<span class="'+ options.classPrefix +'dateHeader">' + tempDate.getDate() + '</span></th>';
+                structure += '<span class="'+ options.classPrefix +'dateHeader">' + tempDate.getDate() + '</span></time></th>';
                 tempDate.setDate(tempDate.getDate() + 1);
             }
 
-            structure += '</tr></thead><tbody>';       
+            structure += '</tr></thead><tbody>';
+            
+            var k = 0;
+            tempDate = new Date(startDate);
+            tempDate.setHours(options.hourStart);     
             
             for(i=0; i < (hourNumber*options.hourDivisions); i++)
             {
                 structure += '<tr role="row">';
 
-                var hour = i + options.hourStart;
-                var hourDisplay = '';
+                if(k < options.hourDivisions){ k++; }else{
+                    tempDate.setHours(tempDate.getHours() + 1);
+                    k = 1;
+                }
+
+                var hourDisplay = tempDate.getHours();
                 var minuteDisplay = (i % options.hourDivisions)*(60/options.hourDivisions);
+
+                tempDate.setMinutes(minuteDisplay);
 
                 if (minuteDisplay === 0){
                     minuteDisplay += '0';
                 }
 
                 if(options.timeConvention === '12Hour'){
-                    switch(hour){
+                    switch(hourDisplay){
                         case 0 : hourDisplay = '12:'+ minuteDisplay +' AM';
                             break;
-                        case 12 : hourDisplay = hour + ':'+ minuteDisplay +' PM';
+                        case 12 : hourDisplay = hourDisplay + ':'+ minuteDisplay +' PM';
                             break;
                         default :
-                            if(hour > 12){
-                                hourDisplay = (hour - 12) + ':'+ minuteDisplay +' PM';
+                            if(hourDisplay > 12){
+                                hourDisplay = (hourDisplay - 12) + ':'+ minuteDisplay +' PM';
                             }else{
-                                hourDisplay = hour + ':'+ minuteDisplay +' AM';
+                                hourDisplay = hourDisplay + ':'+ minuteDisplay +' AM';
                             }
                     }
                 }else{
-                    hourDisplay = hour + ':'+ minuteDisplay;
+                    hourDisplay += ':'+ minuteDisplay;
                 }
 
                 structure += '<th role="rowheader" scope="row" id="' + options.classPrefix + 'row' + (i+1) + '"';
@@ -141,12 +150,8 @@
                     structure += ' class="' + options.classPrefix + 'hour"';
                 }
                 
-                structure += ' data-hour="' + hour + '">';
-                structure += hourDisplay + '</th>';                
-
-                tempDate = new Date(startDate);
-                tempDate.setHours(hour);
-                tempDate.setMinutes((i % options.hourDivisions)*(60/options.hourDivisions));
+                structure += '"><time datetime="'+ tempDate.toTimeString() +'">';
+                structure += hourDisplay + '</time></th>';      
 
                 for(j=0; j < 7; j++)
                 {
@@ -164,6 +169,8 @@
                 }
 
                 structure += '</tr>';
+
+                tempDate.setDate(startDate.getDate()); 
             }
             
             structure += '</tbody></table>';
