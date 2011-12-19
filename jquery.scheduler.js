@@ -108,7 +108,7 @@
             
             for(i=0; i < (hourNumber*options.hourDivisions); i++)
             {
-                structure += '<tr role="row" id="' + options.classPrefix + 'row' + (i+1) + '">';
+                structure += '<tr role="row">';
 
                 var hour = i + options.hourStart;
                 var hourDisplay = '';
@@ -135,7 +135,7 @@
                     hourDisplay = hour + ':'+ minuteDisplay;
                 }
 
-                structure += '<th role="rowheader" scope="row"';
+                structure += '<th role="rowheader" scope="row" id="' + options.classPrefix + 'row' + (i+1) + '"';
                 
                 if((i % options.hourDivisions) === 0){
                     structure += ' class="' + options.classPrefix + 'hour"';
@@ -150,7 +150,7 @@
 
                 for(j=0; j < 7; j++)
                 {
-                    structure += '<td role="gridcell" data-column="'+ j +'" aria-selected="false" aria-labelledby="';
+                    structure += '<td role="gridcell" data-column="'+ j +'" aria-selected="false" aria-describedby="';
                     structure += options.classPrefix + 'column' + (j+1) + ' ';
                     structure += options.classPrefix + 'row' + i + '"';
                     structure += ' data-dateTime="' + tempDate.toString() + '"';

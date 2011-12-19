@@ -385,7 +385,7 @@ test("Test to see that the table cells that are outsdie the date range are succe
 
 });
 
-test("Test for the presence of correct aria rolls", function () {
+test("Test for the presence of correct aria roles", function () {
 
     $('#qunit-fixture').append('<div id="target"></div>');
 
@@ -401,7 +401,7 @@ test("Test for the presence of correct aria rolls", function () {
     var headCells = x.find("thead th");
     var bodyHeaders = x.find("tbody th");
     var table = x.find("table");
-    var haveCorectRowID = true;
+    var haveCorectBodyHeaderID = true;
     var haveCorectHeadID = true;
     var haveRoleRow = true;
     var haveRoleGridCell = true;
@@ -413,9 +413,6 @@ test("Test for the presence of correct aria rolls", function () {
     var haveCorrectLabelledBy = true;
 
     for (i = 0; i < bodyRows.length; i++) {
-        if ($(bodyRows[i]).attr("id") != ("test_row" + (i+1))) {
-            haveCorectRowID = false;
-        }
         if ($(bodyRows[i]).attr("role") != "row") {
             haveRoleRow = false;
         }
@@ -424,7 +421,7 @@ test("Test for the presence of correct aria rolls", function () {
         var j;
 
         for (j = 0; j < 7; j++) {
-            if ($(temp[j]).attr("aria-labelledby") != ("test_column" + (j+1) + " test_row" + i)) {
+            if ($(temp[j]).attr("aria-describedby") != ("test_column" + (j+1) + " test_row" + i)) {
                 haveCorrectLabelledBy = false;
             }
             if ($(temp[j]).attr("role") != "gridcell") {
@@ -446,6 +443,9 @@ test("Test for the presence of correct aria rolls", function () {
     }
 
     for (i = 0; i < bodyHeaders.length; i++) {
+        if ($(bodyHeaders[i]).attr("id") != ("test_row" + (i + 1))) {
+            haveCorectBodyHeaderID = false;
+        }
         if ($(bodyHeaders[i]).attr("scope") != "row") {
             haveCorrectScopeRow = false;
         }
@@ -454,8 +454,8 @@ test("Test for the presence of correct aria rolls", function () {
         }
     }
 
-    ok(haveCorectRowID,
-        'Expect this to be true since all of the rows in the table body should have their correct IDs based on index');
+    ok(haveCorectBodyHeaderID,
+        'Expect this to be true since all of the headers in the rows in the table body should have their correct IDs based on index');
 
     ok(haveRoleRow,
         'Expect this to be true since all of the rows in the table body should have the role "row"');
@@ -485,7 +485,7 @@ test("Test for the presence of correct aria rolls", function () {
         'Expect this to be true since all of the row header elements should have the scope "row"');
 
     ok(haveCorrectLabelledBy,
-        'Expect this to be true since all of the rows should have a labelledby attribute that is correct');
+        'Expect this to be true since all of the rows should have a describedby attribute that is correct');
 
 });
 
