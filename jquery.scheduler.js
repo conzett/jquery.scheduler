@@ -110,31 +110,39 @@
             {
                 structure += '<tr role="row" id="' + options.classPrefix + 'row' + (i+1) + '">';
 
-                if((i % options.hourDivisions) === 0){
+                var hour = i + options.hourStart;
+                var hourDisplay = '';
+                var minuteDisplay = (i % options.hourDivisions)*(60/options.hourDivisions);
 
-                    var hour = i/options.hourDivisions + options.hourStart;
-                    var hourDisplay = '';
-
-                    if(options.timeConvention === '12Hour'){
-                        switch(hour){
-                            case 0 : hourDisplay = '12:00 AM';
-                                break;
-                            case 12 : hourDisplay = hour + ':00 PM';
-                                break;
-                            default :
-                                if(hour > 12){
-                                    hourDisplay = (hour - 12) + ':00 PM';
-                                }else{
-                                    hourDisplay = hour + ':00 AM';
-                                }
-                        }
-                    }else{
-                        hourDisplay = hour + ':00';
-                    }
-
-                    structure += '<th role="rowheader" scope="row" rowspan="' + options.hourDivisions + '" data-hour="' + hour + '">';
-                    structure += hourDisplay + '</th>';
+                if (minuteDisplay === 0){
+                    minuteDisplay += '0';
                 }
+
+                if(options.timeConvention === '12Hour'){
+                    switch(hour){
+                        case 0 : hourDisplay = '12:'+ minuteDisplay +' AM';
+                            break;
+                        case 12 : hourDisplay = hour + ':'+ minuteDisplay +' PM';
+                            break;
+                        default :
+                            if(hour > 12){
+                                hourDisplay = (hour - 12) + ':'+ minuteDisplay +' PM';
+                            }else{
+                                hourDisplay = hour + ':'+ minuteDisplay +' AM';
+                            }
+                    }
+                }else{
+                    hourDisplay = hour + ':'+ minuteDisplay;
+                }
+
+                structure += '<th role="rowheader" scope="row"';
+                
+                if((i % options.hourDivisions) === 0){
+                    structure += ' class="' + options.classPrefix + 'hour"';
+                }
+                
+                structure += ' data-hour="' + hour + '">';
+                structure += hourDisplay + '</th>';                
 
                 tempDate = new Date(startDate);
                 tempDate.setHours(hour);

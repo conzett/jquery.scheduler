@@ -10,7 +10,7 @@ th, td {
 th {
     position : relative;
     width : 100px;
-    padding : 6px;
+    padding : 3px;
     cursor : default;
 }
 
@@ -27,7 +27,7 @@ tbody tr th {
 }
 
 tbody td {
-    height : 20px;
+    height : 15px;
     cursor : cell;
 }
 

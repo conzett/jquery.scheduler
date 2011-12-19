@@ -56,9 +56,6 @@ test("Table markup generation with deafult options", function () {
     equal($(tbodyHeaders[23]).attr('data-hour'), 23,
                         'Expect the hour data value in the header at position ' + 23 + ' to be ' + 23);
 
-    equal($(tbodyHeaders[0]).attr('rowspan'), 2,
-                        'Expect the rowspan attribute in the header at position ' + 0 + ' to be 2');
-
     var cells = $(tbody[12]).find('td');
 
     equal(cells.length, 7, 'Expect the default 7 cells in this row');
@@ -123,11 +120,6 @@ test("Table markup generation with 12 hour a day formatting", function () {
 
     equal($(rowHeaders[12]).html(), '12:00 PM',
                         'Expect the day value in the row header at position 12 to be 12:00 PM');
-
-    for (i = 13; i < 23; i++) {
-        equal($(rowHeaders[i]).html(), i - 12 + ':00 PM',
-                        'Expect the day value in the row header at position ' + i + ' to be ' + (i -12) + ':00 PM');
-    }
 
 });
 
