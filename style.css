@@ -1,6 +1,7 @@
 ﻿table {
     border-collapse:collapse;
     font-size : 12px;
+    font-family : Arial, Helvetica, sans;
 }
 
 th, td {
@@ -24,6 +25,18 @@ caption, th, td {
 
 tbody tr th {
     width : 60px;
+    color : gray;
+    border-bottom-color: lightGray;
+    font-weight : normal;
+}
+
+th.hour-start {
+    color : black;
+    font-weight : bold;
+}
+
+th.hour-end {
+    border-bottom-color: black;
 }
 
 tbody td {

@@ -147,7 +147,11 @@
                 structure += '<th role="rowheader" scope="row" id="' + options.classPrefix + 'row' + (i+1) + '"';
                 
                 if((i % options.hourDivisions) === 0){
-                    structure += ' class="' + options.classPrefix + 'hour"';
+                    structure += ' class="' + options.classPrefix + 'hour-start"';
+                }
+
+                if(k === options.hourDivisions){
+                    structure += ' class="' + options.classPrefix + 'hour-end"';
                 }
                 
                 structure += '"><time datetime="'+ tempDate.toTimeString() +'">';
