@@ -10,51 +10,16 @@ test("Table markup generation with deafult options", function () {
 
     var table = $('#target table');
     var caption = table.find("caption");
-    var thead = table.find("thead tr th");
+    var thead = table.find("thead tr th time");
     var tbody = table.find("tbody tr");
-    var tbodyHeaders = table.find("tbody tr th");    
+    var tbodyHeaders = table.find("tbody tr th time");    
     var i;
 
-    equal(thead.length, 8, "Expect the number of column headers to be 7 + 1 empty");
+    equal(thead.length, 7, "Expect the number of column header time elements to be 7");
 
     date = new Date();
-
-    //equal(table.attr("data-start-date"), date.toDateString(), "Expect the table data-start-date attribute to equal todays date");
-
-    for (i = 1; i < thead.size(); i++) {
-        equal($(thead[i]).attr('data-date'), date.getDate(),
-                    'Expect the date value in the header at position ' + i + ' to be ' + date.getDate());
-        date.setDate(date.getDate() + 1);
-    }
-
-    date = new Date();
-
-    for (i = 1; i < thead.size(); i++) {
-        equal($(thead[i]).attr('data-day'), date.getDay(),
-                        'Expect the day value in the header at position ' + i + ' to be ' + date.getDay());
-        date.setDate(date.getDate() + 1);
-    }
-
-    date = new Date();
-
-    for (i = 1; i < thead.size(); i++) {
-        var expected = daysOfTheWeek[date.getDay()] + '<span class="dateHeader">' + date.getDate() + '</span>';
-        equal($(thead[i]).html(), expected,
-                        'Expect the day value in the header at position ' + i + ' to be ' + expected);
-        date.setDate(date.getDate() + 1);
-    }
 
     equal(tbody.length, 48, "Expect the number of row headers to be 48: 24 hours * 2 default increments");
-
-    equal($(tbodyHeaders[0]).attr('data-hour'), 0,
-                        'Expect the hour data value in the header at position ' + 0 + ' to be ' + 0);
-
-
-    equal($(tbodyHeaders[12]).attr('data-hour'), 12,
-                        'Expect the hour data value in the header at position ' + 12 + ' to be ' + 12);
-
-    equal($(tbodyHeaders[23]).attr('data-hour'), 23,
-                        'Expect the hour data value in the header at position ' + 23 + ' to be ' + 23);
 
     var cells = $(tbody[12]).find('td');
 
@@ -62,8 +27,6 @@ test("Table markup generation with deafult options", function () {
 
     date = new Date();
     var dateString = months[date.getMonth()] + ' ' + date.getDate() + ' - ' + (date.getDate() + 6) + ', ' + date.getFullYear();
-
-    //equal($(caption).html(), prevButton + nextButton + dateString, "Expect the caption date to be " + prevButton + nextButton + dateString);
 
 });
 
@@ -87,39 +50,7 @@ test("Table markup generation with non-deafult options", function () {
 
     equal(rows.length, 32, "Expect the number of rows to be 32: 8 hours * 4 specified increments");
 
-    //equal(table.attr("data-start-date"), "Fri Jul 09 2010", "Expect the table data-start-date attribute to equal the provided date");
-
-    equal($(thead[1]).attr('data-day'), 5, "Expect the first day in the calendar to be 5 or friday as it was on the provided date");
-
-    equal($(thead[1]).attr('data-date'), 9, "Expect the first date in the calendar to be 9 as that was the provided date");
-
-    equal($(thead[7]).attr('data-date'), 15, "Expect the last date in the calendar to be 15 as that is 7 days after the provided date");
-
-    equal($(rowHeaders[0]).attr('data-hour'), 9, "Expect the first hour in the calendar to be 9");
-
-    equal($(rowHeaders[7]).attr('data-hour'), 16, "Expect the first hour in the calendar to be 16");
-
-    //equal($(caption).html(), prevButton + nextButton + "July 9 - 15, 2010", "Expect the caption date to be " + prevButton + nextButton +" July 9 - 15, 2010");
-
     equal($(dateHeaders[1]).attr('class'), "test_dateHeader", "Expect the class of the date header to be test_hourHeader, test_ being the supplie class prefix");
-
-});
-
-test("Table markup generation with 12 hour a day formatting", function () {
-
-    $('#qunit-fixture').append('<div id="target"></div>');
-    $('#target').scheduler({ timeConvention : '12Hour' });
-
-    var table = $('#target');
-    var thead = table.find("thead tr th");
-    var rows = table.find("tbody tr");
-    var rowHeaders = table.find("tbody tr th");
-
-    equal($(rowHeaders[0]).html(), '12:00 AM',
-                        'Expect the day value in the row header at position 0 to be 12:00 AM');
-
-    equal($(rowHeaders[12]).html(), '12:00 PM',
-                        'Expect the day value in the row header at position 12 to be 12:00 PM');
 
 });
 
@@ -136,9 +67,9 @@ test("Incrementing and decrementing the week", function () {
     $(next).click();
 
     table = $('#target');
-    var thead = table.find("thead th");
+    var thead = table.find("thead th time");
 
-    equal($(thead[1]).attr('data-date'), 16,
+    equal($(thead[0]).attr('datetime'), "Fri Jul 16 2010",
         'After we click the next button again we expect the date value in the table header at position 1 to be a week later than the provided date argument');
 
     table = $('#target');
@@ -147,9 +78,9 @@ test("Incrementing and decrementing the week", function () {
     $(prev).click();
 
     table = $('#target');
-    thead = table.find("thead th");
+    thead = table.find("thead th time");
 
-    equal($(thead[1]).attr('data-date'), 9,
+    equal($(thead[0]).attr('datetime'), "Fri Jul 09 2010",
         'After we click the next button we expect the date value in the table header at position 1 to be back to the provided date argument');
 
 });
@@ -351,9 +282,9 @@ test("Test changing months and years always results in first day of week being t
 
     $('#month').val('9').change();
 
-    var thead = x.find("thead tr th");
+    var thead = x.find("thead tr th time");
 
-    equal($(thead[1]).attr('data-day'), 0,
+    equal($(thead[0]).attr('datetime'), "Sun Nov 13 2011",
         'Expect the day of October to be Sunday, same as the day we switched from');
 
 });
@@ -500,26 +431,26 @@ test("Test passing in custom buttons for previous and next", function () {
     });
 
     var buttons = $('caption').find("button");
-    var headers = $("thead th");
+    var headers = $("thead th time");
 
     equal(buttons.length, 2,
         'Expect two buttons inserted into the caption element');
 
-    var firstDate = $(headers[1]).attr("data-date");
+    var firstDate = $(headers[0]).attr("datetime");
 
     $(buttons[1]).click();
 
-    headers = $("thead th");
+    headers = $("thead th time");
 
-    var secondDate = $(headers[1]).attr("data-date");
+    var secondDate = $(headers[0]).attr("datetime");
 
-    equal((secondDate - firstDate), 7,
+    equal(secondDate, "Sun Nov 20 2011",
         'Expect the date to be the next weeks date after the next button is clicked');
 
     buttons = $('caption').find("button");
     $(buttons[0]).click();
 
-    var newDate = $($("thead th")[1]).attr("data-date");
+    var newDate = $($("thead th time")[0]).attr("datetime");
 
     equal(newDate, firstDate,
         'Expect the date to be back to the current date after the previous button is clicked');
