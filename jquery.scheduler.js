@@ -162,7 +162,7 @@
                     structure += '<td role="gridcell" data-column="'+ j +'" aria-selected="false" aria-describedby="';
                     structure += options.classPrefix + 'column' + (j+1) + ' ';
                     structure += options.classPrefix + 'row' + i + '"';
-                    structure += ' data-dateTime="' + tempDate.toString() + '"';
+                    structure += ' data-datetime="' + tempDate.toString() + '"';
 
                     if((tempDate < dateMin) || (tempDate > dateMax)){
                         structure += ' aria-disabled="true" class="' + options.classPrefix +'disabled"';
@@ -174,6 +174,7 @@
 
                 structure += '</tr>';
 
+                tempDate.setMonth(startDate.getMonth());
                 tempDate.setDate(startDate.getDate()); 
             }
             
@@ -277,12 +278,16 @@
         }
 
         this.element.incrementWeek = function() {
+            console.log(this.currentDate.toString());
             this.currentDate.setDate(this.currentDate.getDate()+7);
+            console.log(this.currentDate.toString());
             $(this).trigger('generateTable');
         }
 
         this.element.decrementWeek = function() {
+            console.log(this.currentDate.toString());
             this.currentDate.setDate(this.currentDate.getDate()-7);
+            console.log(this.currentDate.toString());
             $(this).trigger('generateTable');
         }
 
